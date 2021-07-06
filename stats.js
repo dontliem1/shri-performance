@@ -9,7 +9,7 @@ function quantile(arr, q) {
     } else {
         return Math.floor(sorted[base]);
     }
-};
+}
 
 function prepareData(result) {
 	return result.data.map(item => {
@@ -20,15 +20,15 @@ function prepareData(result) {
 }
 
 // показать значение метрики за несколько день
-function showMetricByPeriod(...) {
+function showMetricByPeriod() {
 }
 
 // показать сессию пользователя
-function showSession(...) {
+function showSession() {
 }
 
 // сравнить метрику в разных срезах
-function compareMetric(...) {
+function compareMetric() {
 }
 
 // рассчитать метрику за выбранный день
@@ -43,15 +43,15 @@ function calcMetricByDate(data, page, name, date) {
 		`hits=${sampleData.length}`);
 }
 
-fetch('https://shri.yandex/hw/stat/data?counterId=6A1D62E1-5DB9-4480-A661-AC766AD7D3FD')
-	.then(res => res.json())
-	.then(result => {
-		let data = prepareData(result);
-
-		calcMetricByDate(data, 'send test', 'connect', '2021-07-03');
-		calcMetricByDate(data, 'send test', 'ttfb', '2021-07-03');
-		calcMetricByDate(data, 'send test', 'load', '2021-07-03');
-
-		// добавить свои сценарии, реализовать функции выше
-		// ...
-	});
+// fetch('https://shri.yandex/hw/stat/data?counterId=4F4BF570-FE0D-46A1-AB81-6651F29C2735')
+// 	.then(res => res.json())
+// 	.then(result => {
+// 		let data = prepareData(result);
+//
+// 		calcMetricByDate(data, 'send test', 'connect', '2021-07-03');
+// 		calcMetricByDate(data, 'send test', 'ttfb', '2021-07-03');
+// 		calcMetricByDate(data, 'send test', 'load', '2021-07-03');
+//
+// 	});
+// добавить свои сценарии внутрь fetch, реализовать функции выше
+// ...

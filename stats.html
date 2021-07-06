@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Аналитика</title>
+</head>
+<body>
+<h1>Аналитика</h1>
+<p><a href="index.html">← На страницу замеров</a></p>
+<div id="result"></div>
+<script src="stats.js"></script>
+<script>
+  fetch('https://shri.yandex/hw/stat/data?counterId=4F4BF570-FE0D-46A1-AB81-6651F29C2735')
+          .then(res => res.json())
+          .then(result => {
+            let data = prepareData(result);
+            console.log(data);
+          });
+</script>
+</body>
+</html>

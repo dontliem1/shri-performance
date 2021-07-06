@@ -32,7 +32,7 @@
 			platform: 'desktop',
 			ip: ip
 		});
-		const timeStart = Date.now();
+		var timeStart = Date.now();
 	</script>
 </head>
 <body>
@@ -58,7 +58,7 @@
 	</script>
 
 	<h2>2. Посмотрите видео</h2>
-	<video src="video.mp4" width="250" height="200" id="video" loop onpause="counter.send('paused', this.currentTime);//alert('paused: '+this.currentTime);" onloadeddata="counter.send('videoIsReady', timeStart - Date.now());//alert('videoIsReady: '+(timeStart - Date.now()));"></video><br>
+	<video src="video.mp4" width="250" height="200" id="video" loop onpause="counter.send('paused', this.currentTime);//alert('paused: '+this.currentTime);" onloadeddata="counter.send('videoIsReady', Date.now() - timeStart);//alert('videoIsReady: '+(timeStart - Date.now()));"></video><br>
 	<button type="button" name="videoControl" value="play" style="font-size: 150%;" onclick="document.getElementById('video').play();">Воспроизвести</button>
 	<button type="button" name="videoControl" value="stop" style="font-size: 150%;" onclick="document.getElementById('video').pause();">Хватит</button>
 
@@ -77,6 +77,8 @@
 			}
 		});
 	</script>
+
+	<p><a href="stats.html">Посмотреть аналитику →</a></p>
 
 	<script>
 		new PerformanceObserver((entryList) => {
