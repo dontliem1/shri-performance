@@ -18,6 +18,22 @@
 			cursor: not-allowed;
 		}
 	</style>
+	<script src="send.js"></script>
+	<script>
+		let ip = '192.168.0.9';
+		if (!localStorage.getItem('ip')) {
+			ip = (192+"."+168+"."+1+"."+(Math.floor(Math.random() * 5)));
+			localStorage.setItem('ip', ip);
+		}
+		var counter = new Counter();
+		counter.init('4F4BF570-FE0D-46A1-AB81-6651F29C2735', String(Math.random()).substr(2, 12), 'main');
+		counter.setAdditionalParams({
+			env: 'production',
+			platform: 'desktop',
+			ip: ip
+		});
+		const timeStart = Date.now();
+	</script>
 </head>
 <body>
 	<h1>Пример отправки разных метрик</h1>
@@ -31,7 +47,8 @@
 		let colors = document.getElementById('colorBtns').children;
 		for (const color of colors) {
 			color.addEventListener('click', function (e) {
-				alert('color: '+e.target.value);
+				// alert('color: '+e.target.value);
+				counter.send('color', e.target.value);
 				e.target.setAttribute('aria-selected', 'true');
 				for (const colorBtn of colors) {
 					colorBtn.disabled = true;
@@ -41,7 +58,7 @@
 	</script>
 
 	<h2>2. Посмотрите видео</h2>
-	<video src="video.mp4" width="250" height="200" id="video" loop onpause="alert('paused: '+this.currentTime);"></video><br>
+	<video src="video.mp4" width="250" height="200" id="video" loop onpause="counter.send('paused', this.currentTime);//alert('paused: '+this.currentTime);" onloadeddata="counter.send('videoIsReady', timeStart - Date.now());//alert('videoIsReady: '+(timeStart - Date.now()));"></video><br>
 	<button type="button" name="videoControl" value="play" style="font-size: 150%;" onclick="document.getElementById('video').play();">Воспроизвести</button>
 	<button type="button" name="videoControl" value="stop" style="font-size: 150%;" onclick="document.getElementById('video').pause();">Хватит</button>
 
@@ -49,36 +66,38 @@
 	<input type="range" value="0" max="150" id="slider" name="slider" aria-label="Слайдер"/>
 	<script>
 		document.getElementById('slider').addEventListener('input', function () {
-			alert('sliderStart: какое-то время');
+			// alert('sliderStart: какое-то время');
+			counter.send('sliderStart', Date.now());
 		}, { once: true });
 		document.getElementById('slider').addEventListener('change', function (e) {
 			if (e.target.value === e.target.max) {
-				alert('sliderEnd: какое-то время');
+				// alert('sliderEnd: какое-то время');
+				counter.send('sliderEnd', Date.now());
 				e.target.disabled = true;
 			}
 		});
 	</script>
 
-<!--	<script src="send.js"></script>-->
-	<!--script>
-		let counter = new Counter();
-
-		counter.init('6A1D62E1-5DB9-4480-A661-AC766AD7D3FD', String(Math.random()).substr(2, 12), 'send test');
-		counter.setAdditionalParams({
-			env: 'production',
-			platform: 'touch'
-		});
-
-		counter.send('connect', performance.timing.connectEnd - performance.timing.connectStart);
-		counter.send('ttfb', performance.timing.responseEnd - performance.timing.requestStart);
-
-		let timeStart = Date.now();
-
-		setTimeout(function() {
-			document.querySelector('.square').classList.add('black');
-
-			counter.send('load', Date.now() - timeStart);
-		}, Math.random() * 1000 + 500);
-	</script-->
+	<script>
+		new PerformanceObserver((entryList) => {
+			for (const entry of entryList.getEntriesByName('first-contentful-paint')) {
+				// alert('fcp: ' + entry.startTime);
+				counter.send('fcp', entry.startTime);
+			}
+		}).observe({type: 'paint', buffered: true});
+		new PerformanceObserver((entryList) => {
+			for (const entry of entryList.getEntries()) {
+				// alert('lcp: ' + entry.startTime);
+				counter.send('lcp', entry.startTime);
+			}
+		}).observe({type: 'largest-contentful-paint', buffered: true});
+		new PerformanceObserver((entryList) => {
+			for (const entry of entryList.getEntries()) {
+				const delay = entry.processingStart - entry.startTime;
+				// alert('fid: ' + delay);
+				counter.send('fid', delay);
+			}
+		}).observe({type: 'first-input', buffered: true});
+	</script>
 </body>
 </html>
