@@ -41,9 +41,9 @@
 	</script>
 
 	<h2>2. Посмотрите видео</h2>
-	<video src="video.mp4" width="250" height="200" id="video" loop></video><br>
+	<video src="video.mp4" width="250" height="200" id="video" loop onpause="alert('paused: '+this.currentTime);"></video><br>
 	<button type="button" name="videoControl" value="play" style="font-size: 150%;" onclick="document.getElementById('video').play();">Воспроизвести</button>
-	<button type="button" name="videoControl" value="stop" style="font-size: 150%;" onclick="document.getElementById('video').pause(); alert('paused: '+document.getElementById('video').currentTime);">Хватит</button>
+	<button type="button" name="videoControl" value="stop" style="font-size: 150%;" onclick="document.getElementById('video').pause();">Хватит</button>
 
 	<h2>3. Проведите бегунок вправо</h2>
 	<input type="range" value="0" max="150" id="slider" name="slider" aria-label="Слайдер"/>
