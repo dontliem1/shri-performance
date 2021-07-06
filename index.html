@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<title>Пример отправки метрики</title>
+	<style>
+		#colorBtns button[aria-selected="true"]::after {
+			content: ' — ✅';
+		}
+		#colorBtns button:not([aria-selected="true"]):disabled {
+			opacity: .5;
+		}
+		#colorBtns button:enabled {
+			cursor: pointer;
+		}
+		#colorBtns button:disabled {
+			cursor: not-allowed;
+		}
+	</style>
+</head>
+<body>
+	<h1>Пример отправки разных метрик</h1>
+	<h2>1. Нажмите на цвет, который вам больше нравится</h2>
+	<div id="colorBtns">
+		<button type="button" name="color" value="red" style="background-color: red; color: #fff; font-size: 150%;">Красный</button>
+		<button type="button" name="color" value="green" style="background-color: green; color: #fff; font-size: 150%;">Зеленый</button>
+		<button type="button" name="color" value="blue" style="background-color: blue; color: #fff; font-size: 150%;">Синий</button>
+	</div>
+	<script>
+		let colors = document.getElementById('colorBtns').children;
+		for (const color of colors) {
+			color.addEventListener('click', function (e) {
+				alert('color: '+e.target.value);
+				e.target.setAttribute('aria-selected', 'true');
+				for (const colorBtn of colors) {
+					colorBtn.disabled = true;
+				}
+			});
+		}
+	</script>
+
+	<h2>2. Посмотрите видео</h2>
+	<video src="video.mp4" width="250" height="200" id="video" loop></video><br>
+	<button type="button" name="videoControl" value="play" style="font-size: 150%;" onclick="document.getElementById('video').play();">Воспроизвести</button>
+	<button type="button" name="videoControl" value="stop" style="font-size: 150%;" onclick="document.getElementById('video').pause(); alert('paused: '+document.getElementById('video').currentTime);">Хватит</button>
+
+	<h2>3. Проведите бегунок вправо</h2>
+	<input type="range" value="0" max="150" id="slider" name="slider" aria-label="Слайдер"/>
+	<script>
+		document.getElementById('slider').addEventListener('input', function () {
+			alert('sliderStart: какое-то время');
+		}, { once: true });
+		document.getElementById('slider').addEventListener('change', function (e) {
+			if (e.target.value === e.target.max) {
+				alert('sliderEnd: какое-то время');
+				e.target.disabled = true;
+			}
+		});
+	</script>
+
+<!--	<script src="send.js"></script>-->
+	<!--script>
+		let counter = new Counter();
+
+		counter.init('6A1D62E1-5DB9-4480-A661-AC766AD7D3FD', String(Math.random()).substr(2, 12), 'send test');
+		counter.setAdditionalParams({
+			env: 'production',
+			platform: 'touch'
+		});
+
+		counter.send('connect', performance.timing.connectEnd - performance.timing.connectStart);
+		counter.send('ttfb', performance.timing.responseEnd - performance.timing.requestStart);
+
+		let timeStart = Date.now();
+
+		setTimeout(function() {
+			document.querySelector('.square').classList.add('black');
+
+			counter.send('load', Date.now() - timeStart);
+		}, Math.random() * 1000 + 500);
+	</script-->
+</body>
+</html>
